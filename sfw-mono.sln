@@ -5,7 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bindings", "Bindings", "{5A70C5E5-3B76-44E0-A024-DBB77D5A47E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sfw.net-mono", "sfw.net\sfw.net-mono.csproj", "{4702E558-CFCB-42BA-A890-D024BAFC0789}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sfw.net", "sfw.net\sfw.net.csproj", "{1ACFB048-3E82-4AB8-AE1C-B3BD8E5F1E0C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FDA851B2-02AA-44C8-B2E5-381EC4BEF027} = {FDA851B2-02AA-44C8-B2E5-381EC4BEF027}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sfw.net.TestConsole-mono", "sfw.net.TestConsole\sfw.net.TestConsole-mono.csproj", "{413FDC8A-404A-496E-A5C7-0D01E7490CBE}"
 EndProject

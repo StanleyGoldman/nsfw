@@ -34,8 +34,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <ExecutablePath>$(ExecutablePath);$(MSBuildProjectDirectory)\.\bin\;$(MSBuildProjectDirectory)\.\bin\</ExecutablePath>
-    <IntDir>$(SolutionDir)obj\win\$(PlatformTarget)\$(ProjectName)\</IntDir>
-    <OutDir>$(SolutionDir)build\win\$(PlatformTarget)\$(ProjectName)\</OutDir>
+    <IntDir>obj\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <OutDir>build\$(PlatformTarget)\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
     <TargetPath>$(OutDir)lib\$(ProjectName)$(TargetExt)</TargetPath>
   </PropertyGroup>
@@ -43,7 +43,8 @@
     <ClCompile>
       <AdditionalIncludeDirectories>src\primitves;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>OPA_HAVE_NT_INTRINSICS=1;_opa_inline=__inline;OPA_SIZEOF_VOID_P=8;HAVE_STRUCT_TIMESPEC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPA_HAVE_NT_INTRINSICS=1;_opa_inline=__inline;OPA_SIZEOF_VOID_P=4;HAVE_STRUCT_TIMESPEC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Lib>
       <OutputFile>$(OutDir)lib\$(ProjectName)$(TargetExt)</OutputFile>
@@ -62,6 +63,7 @@
       <AdditionalIncludeDirectories>src\primitves;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PreprocessorDefinitions>OPA_HAVE_NT_INTRINSICS=1;_opa_inline=__inline;OPA_SIZEOF_VOID_P=8;HAVE_STRUCT_TIMESPEC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Lib>
       <OutputFile>$(OutDir)lib\$(ProjectName)$(TargetExt)</OutputFile>

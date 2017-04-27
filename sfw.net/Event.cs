@@ -3,7 +3,7 @@
 namespace sfw.net
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct Event
+    public struct Event
     {
         public EventType Type;
         public string Directory;

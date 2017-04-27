@@ -1,6 +1,6 @@
 ﻿namespace sfw.net
 {
-    enum EventType
+    public enum EventType
     {
         CREATED = 0,
         DELETED = 1,

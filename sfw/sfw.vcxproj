@@ -71,32 +71,37 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)build\win\$(PlatformTarget)\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\win\$(PlatformTarget)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>obj\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_$(PlatformTarget)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)build\win\$(PlatformTarget)\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\win\$(PlatformTarget)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>obj\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_$(PlatformTarget)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)build\win\$(PlatformTarget)\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\win\$(PlatformTarget)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>obj\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_$(PlatformTarget)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)build\win\$(PlatformTarget)\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\win\$(PlatformTarget)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>obj\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_$(PlatformTarget)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SFW_EXPORTS;%(PreprocessorDefinitions);HAVE_STRUCT_TIMESPEC=1;OPA_HAVE_NT_INTRINSICS=1;OPA_SIZEOF_VOID_P=8;_SCL_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SFW_EXPORTS;%(PreprocessorDefinitions);HAVE_STRUCT_TIMESPEC=1;OPA_HAVE_NT_INTRINSICS=1;OPA_SIZEOF_VOID_P=4;_SCL_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,13 +110,7 @@
       <AdditionalDependencies>pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /F "$(SolutionDir)lib\pthreads-win32-2.9.1\dll\$(PlatformTarget)\pthreadVC2.dll" "$(OutDir)"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\test-console\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\test-console\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net.TestConsole\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net.TestConsole\$(ConfigurationName)\"</Command>
+      <Command>xcopy /Y /F "$(SolutionDir)lib\pthreads-win32-2.9.1\dll\$(PlatformTarget)\pthreadVC2.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -122,6 +121,7 @@ xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\
       <PreprocessorDefinitions>WIN64;_DEBUG;_WINDOWS;_USRDLL;SFW_EXPORTS;%(PreprocessorDefinitions);HAVE_STRUCT_TIMESPEC=1;OPA_HAVE_NT_INTRINSICS=1;OPA_SIZEOF_VOID_P=8;_SCL_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,13 +130,7 @@ xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\
       <AdditionalDependencies>pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /F "$(SolutionDir)lib\pthreads-win32-2.9.1\dll\$(PlatformTarget)\pthreadVC2.dll" "$(OutDir)"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\test-console\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\test-console\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net.TestConsole\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net.TestConsole\$(ConfigurationName)\"</Command>
+      <Command>xcopy /Y /F "$(SolutionDir)lib\pthreads-win32-2.9.1\dll\$(PlatformTarget)\pthreadVC2.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -149,6 +143,7 @@ xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SFW_EXPORTS;%(PreprocessorDefinitions);HAVE_STRUCT_TIMESPEC=1;OPA_HAVE_NT_INTRINSICS=1;OPA_SIZEOF_VOID_P=8;_SCL_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,13 +154,7 @@ xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\
       <AdditionalDependencies>pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /F "$(SolutionDir)lib\pthreads-win32-2.9.1\dll\$(PlatformTarget)\pthreadVC2.dll" "$(OutDir)"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\test-console\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\test-console\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net.TestConsole\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net.TestConsole\$(ConfigurationName)\"</Command>
+      <Command>xcopy /Y /F "$(SolutionDir)lib\pthreads-win32-2.9.1\dll\$(PlatformTarget)\pthreadVC2.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -178,6 +167,7 @@ xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\
       <PreprocessorDefinitions>WIN64;NDEBUG;_WINDOWS;_USRDLL;SFW_EXPORTS;%(PreprocessorDefinitions);HAVE_STRUCT_TIMESPEC=1;OPA_HAVE_NT_INTRINSICS=1;OPA_SIZEOF_VOID_P=8;_SCL_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -188,13 +178,7 @@ xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\
       <AdditionalDependencies>pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /F "$(SolutionDir)lib\pthreads-win32-2.9.1\dll\$(PlatformTarget)\pthreadVC2.dll" "$(OutDir)"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\test-console\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\test-console\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.dll" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net.TestConsole\$(ConfigurationName)\"
-xcopy /Y /F "$(SolutionDir)build\win\$(PlatformTarget)\sfw\$(ConfigurationName)\*.pdb" "$(SolutionDir)build\win\$(PlatformTarget)\sfw.net.TestConsole\$(ConfigurationName)\"</Command>
+      <Command>xcopy /Y /F "$(SolutionDir)lib\pthreads-win32-2.9.1\dll\$(PlatformTarget)\pthreadVC2.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

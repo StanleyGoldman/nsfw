@@ -4,45 +4,36 @@ using System.Runtime.InteropServices;
 
 namespace sfw.net
 {
-    internal class NativeInterface: IDisposable
+    public class NativeInterface: IDisposable
     {
         private IntPtr _ptr;
 
         public NativeInterface(string path)
         {
-            _ptr = NativeInterfaceStatic.NativeInterface_Create(path);
+            _ptr = NativeMethods.Create(path);
         }
 
         public bool HasErrored()
         {
-            return NativeInterfaceStatic.NativeInterface_hasErrored(_ptr);
+            return NativeMethods.HasError(_ptr);
         }
 
         public string GetError()
         {
-            return NativeInterfaceStatic.NativeInterface_getError(_ptr);
+            return NativeMethods.GetError(_ptr);
         }
 
         public Event[] GetEvents()
         {
             IntPtr eventPtr;
             int count;
-            NativeInterfaceStatic.NativeInterface_getEvents(_ptr, out eventPtr, out count);
+            NativeMethods.GetEvents(_ptr, out eventPtr, out count);
 
             var events = new List<Event>();
-
-            if (count > 0)
+            var eventSize = Marshal.SizeOf(typeof(Event));
+            for (int i = 0; i < count; i++, eventPtr = new IntPtr(eventPtr.ToInt64() + eventSize))
             {
-                events.Add(Marshal.PtrToStructure<Event>(eventPtr));
-                count--;
-
-                while (count > 0)
-                {
-                    eventPtr = eventPtr + Marshal.SizeOf<Event>();
-                    events.Add(Marshal.PtrToStructure<Event>(eventPtr));
-
-                    count--;
-                }
+                events.Add((Event)Marshal.PtrToStructure(eventPtr, typeof(Event)));
             }
 
             return events.ToArray();
@@ -53,7 +44,7 @@ namespace sfw.net
             if (_ptr == IntPtr.Zero)
                 return;
 
-            NativeInterfaceStatic.NativeInterface_Delete(_ptr);
+            NativeMethods.Delete(_ptr);
             _ptr = IntPtr.Zero;
         }
     }
