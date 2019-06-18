@@ -35,7 +35,7 @@ case "$target_cpu" in
 	;;
 esac
 
-INCLUDE_PATHS="src src/openpa src/sfw/includes src/openpa/src"
+INCLUDE_PATHS="src src/sfw/includes"
 
 CFLAGS="$CFLAGS -fPIC"
 CPPFLAGS="$CPPFLAGS -fPIC"
@@ -96,7 +96,6 @@ AC_SUBST(INCLUDE_PATHS)
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
-	src/openpa/Makefile
 	src/sfw/Makefile
 	src/bindings/Makefile
 	src/bindings/sfw.net/Makefile

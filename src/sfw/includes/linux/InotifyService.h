@@ -12,7 +12,7 @@ class InotifyTree;
 
 class InotifyService {
 public:
-  InotifyService(EventQueue &queue, std::string path);
+  InotifyService(std::shared_ptr<EventQueue> queue, std::string path);
 
   std::string getError();
   bool hasErrored();
@@ -24,15 +24,15 @@ private:
   void createDirectory(int wd, std::string name);
   void createDirectoryTree(std::string directoryTreePath);
   void dispatch(EventType action, int wd, std::string name);
-  void dispatchRename(int wd, std::string oldName, std::string newName);
+  void dispatchRename(int fromWd, std::string fromName, int toWd, std::string toName);
   void modify(int wd, std::string name);
   void remove(int wd, std::string name);
   void removeDirectory(int wd);
-  void rename(int wd, std::string oldName, std::string newName);
-  void renameDirectory(int wd, std::string oldName, std::string newName);
+  void rename(int fromWd, std::string fromName, int toWd, std::string toName);
+  void renameDirectory(int fromWd, std::string fromName, int toWd, std::string toName);
 
   InotifyEventLoop *mEventLoop;
-  EventQueue &mQueue;
+  std::shared_ptr<EventQueue> mQueue;
   InotifyTree *mTree;
   int mInotifyInstance;
 

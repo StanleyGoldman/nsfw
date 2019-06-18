@@ -4,7 +4,7 @@
 
 #include "InotifyService.h"
 
-InotifyService::InotifyService(EventQueue &queue, std::string path):
+InotifyService::InotifyService(std::shared_ptr<EventQueue> queue, std::string path):
   mEventLoop(NULL),
   mQueue(queue),
   mTree(NULL) {
@@ -49,16 +49,16 @@ void InotifyService::dispatch(EventType action, int wd, std::string name) {
     return;
   }
 
-  mQueue.enqueue(action, path, name);
+  mQueue->enqueue(action, path, name);
 }
 
-void InotifyService::dispatchRename(int wd, std::string oldName, std::string newName) {
-  std::string path;
-  if (!mTree->getPath(path, wd)) {
+void InotifyService::dispatchRename(int fromWd, std::string fromName, int toWd, std::string toName) {
+  std::string fromPath, toPath;
+  if (!mTree->getPath(fromPath, fromWd) || !mTree->getPath(toPath, toWd)) {
     return;
   }
 
-  mQueue.enqueue(RENAMED, path, oldName, newName);
+  mQueue->enqueue(RENAMED, fromPath, fromName, toPath, toName);
 }
 
 std::string InotifyService::getError() {
@@ -93,8 +93,8 @@ void InotifyService::remove(int wd, std::string name) {
   dispatch(DELETED, wd, name);
 }
 
-void InotifyService::rename(int wd, std::string oldName, std::string newName) {
-  dispatchRename(wd, oldName, newName);
+void InotifyService::rename(int fromWd, std::string fromName, int toWd, std::string toName) {
+  dispatchRename(fromWd, fromName, toWd, toName);
 }
 
 void InotifyService::createDirectory(int wd, std::string name) {
@@ -110,12 +110,12 @@ void InotifyService::removeDirectory(int wd) {
   mTree->removeDirectory(wd);
 }
 
-void InotifyService::renameDirectory(int wd, std::string oldName, std::string newName) {
-  if (!mTree->nodeExists(wd)) {
+void InotifyService::renameDirectory(int fromWd, std::string fromName, int toWd, std::string toName) {
+  if (!mTree->nodeExists(fromWd) || !mTree->nodeExists(toWd)) {
     return;
   }
 
-  mTree->renameDirectory(wd, oldName, newName);
+  mTree->renameDirectory(fromWd, fromName, toWd, toName);
 
-  dispatchRename(wd, oldName, newName);
+  dispatchRename(fromWd, fromName, toWd, toName);
 }

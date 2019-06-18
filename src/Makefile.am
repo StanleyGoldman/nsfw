@@ -1,1 +1,1 @@
-SUBDIRS = openpa sfw bindings
+SUBDIRS = sfw bindings

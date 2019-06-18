@@ -5,7 +5,7 @@
 #include "FSEventsService.h"
 #include <iostream>
 
-FSEventsService::FSEventsService(EventQueue &queue, std::string path):
+FSEventsService::FSEventsService(std::shared_ptr<EventQueue> queue, std::string path):
   mPath(path), mQueue(queue) {
   mRunLoop = new RunLoop(this, path);
 
@@ -82,7 +82,7 @@ void FSEventsService::dispatch(EventType action, std::string path) {
 
   splitFilePath(directory, name, path);
 
-  mQueue.enqueue(action, directory, name);
+  mQueue->enqueue(action, directory, name);
 }
 
 std::string FSEventsService::getError() {
@@ -129,9 +129,9 @@ void FSEventsService::rename(std::vector<std::string> *paths) {
            sideBExists = stat(fullSideB.c_str(), &renameSideB) == 0;
 
       if (sideAExists && !sideBExists) {
-        mQueue.enqueue(RENAMED, binIterator->first, sideB, sideA);
+        mQueue->enqueue(RENAMED, binIterator->first, sideB, binIterator->first, sideA);
       } else if (!sideAExists && sideBExists) {
-        mQueue.enqueue(RENAMED, binIterator->first, sideA, sideB);
+        mQueue->enqueue(RENAMED, binIterator->first, sideA, binIterator->first, sideB);
       } else {
         demangle(fullSideA);
         demangle(fullSideB);

@@ -102,7 +102,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>TARGET_WIN;WIN32;_DEBUG;_WINDOWS;_USRDLL;SFW_EXPORTS;%(PreprocessorDefinitions);HAVE_STRUCT_TIMESPEC=1;OPA_HAVE_NT_INTRINSICS=1;OPA_SIZEOF_VOID_P=4;_SCL_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)includes;$(ProjectDir)includes\win32;$(SolutionDir)src\openpa\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)includes;$(ProjectDir)includes\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -126,7 +126,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>TARGET_WIN;WIN64;_DEBUG;_WINDOWS;_USRDLL;SFW_EXPORTS;%(PreprocessorDefinitions);HAVE_STRUCT_TIMESPEC=1;OPA_HAVE_NT_INTRINSICS=1;OPA_SIZEOF_VOID_P=8;_SCL_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)includes;$(ProjectDir)includes\win32;$(SolutionDir)src\openpa\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)includes;$(ProjectDir)includes\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
@@ -149,7 +149,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>TARGET_WIN;WIN32;NDEBUG;_WINDOWS;_USRDLL;SFW_EXPORTS;%(PreprocessorDefinitions);HAVE_STRUCT_TIMESPEC=1;OPA_HAVE_NT_INTRINSICS=1;OPA_SIZEOF_VOID_P=8;_SCL_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)includes;$(ProjectDir)includes\win32;$(SolutionDir)src\openpa\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)includes;$(ProjectDir)includes\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -173,7 +173,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>TARGET_WIN;WIN64;NDEBUG;_WINDOWS;_USRDLL;SFW_EXPORTS;%(PreprocessorDefinitions);HAVE_STRUCT_TIMESPEC=1;OPA_HAVE_NT_INTRINSICS=1;OPA_SIZEOF_VOID_P=8;_SCL_SECURE_NO_WARNINGS;NOMINMAX</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)includes;$(ProjectDir)includes\win32;$(SolutionDir)src\openpa\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)includes;$(ProjectDir)includes\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -191,6 +191,7 @@
   <ItemGroup>
     <ClInclude Include="includes\Lock.h" />
     <ClInclude Include="includes\NativeInterface.h" />
+    <ClInclude Include="includes\SingleshotSemaphore.h" />
     <ClInclude Include="includes\SFWExport.h" />
     <ClInclude Include="includes\Queue.h" />
     <ClInclude Include="includes\win32\pthread.h" />
@@ -201,21 +202,20 @@
     <ClInclude Include="includes\win32\pthreads-win32\pthread.h" />
     <ClInclude Include="includes\win32\pthreads-win32\sched.h" />
     <ClInclude Include="includes\win32\pthreads-win32\semaphore.h" />
+    <ClInclude Include="includes\win32\Controller.h" />
     <ClInclude Include="includes\win32\ReadLoop.h" />
     <ClInclude Include="includes\win32\ReadLoopRunner.h" />
+    <ClInclude Include="includes\win32\Watcher.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Lock.cpp" />
     <ClCompile Include="src\NativeInterface.cpp" />
     <ClCompile Include="src\SFWExport.cpp" />
     <ClCompile Include="src\Queue.cpp" />
+    <ClCompile Include="src\win32\Controller.cpp" />
     <ClCompile Include="src\win32\ReadLoop.cpp" />
     <ClCompile Include="src\win32\ReadLoopRunner.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\openpa\openpa.vcxproj">
-      <Project>{59bcd980-2fba-0987-d4c5-76707c3607bc}</Project>
-    </ProjectReference>
+    <ClCompile Include="src\win32\Watcher.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

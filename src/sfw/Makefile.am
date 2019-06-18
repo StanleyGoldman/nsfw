@@ -4,8 +4,12 @@ includes = $(addprefix -I$(top_srcdir)/, $(INCLUDE_PATHS))
 
 if TARGET_WIN
 os_sources = \
+	src/win32/Controller.cpp \
 	src/win32/ReadLoop.cpp \
 	src/win32/ReadLooprunner.cpp \
+	src/win32/Watcher.cpp \
+	includes/win32/Controller.h \
+	includes/win32/pthread.h \
 	includes/win32/pthreads-win32/config.h \
 	includes/win32/pthreads-win32/context.h \
 	includes/win32/pthreads-win32/implement.h \
@@ -13,9 +17,9 @@ os_sources = \
 	includes/win32/pthreads-win32/pthread.h \
 	includes/win32/pthreads-win32/sched.h \
 	includes/win32/pthreads-win32/semaphore.h \
-	includes/win32/pthread.h \
 	includes/win32/ReadLoop.h \
-	includes/linux/ReadLoopRunner.h
+	includes/win32/ReadLoopRunner.h \
+	includes/win32/Watcher.h
 endif
 
 if TARGET_LINUX
@@ -45,13 +49,13 @@ common_sources = \
 	includes/Lock.h \
 	includes/Queue.h \
 	includes/NativeInterface.h \
+	includes/SingleShotSemaphore.h \
 	includes/SFWExport.h
 
 libsfw_la_SOURCES = $(common_sources) $(os_sources)
 
 libsfw_la_CFLAGS = $(CFLAGS)
 libsfw_la_CPPFLAGS = $(CPPFLAGS) $(includes)
-libsfw_la_LIBADD = $(top_builddir)/src/openpa/libopenpa.la
 
 libsfw_la_LDFLAGS = $(LDFLAGS) -no-undefined
 

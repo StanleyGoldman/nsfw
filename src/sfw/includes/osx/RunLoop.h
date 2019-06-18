@@ -1,11 +1,11 @@
 #ifndef NSFW_RUNLOOP_H
 #define NSFW_RUNLOOP_H
 
-#include "../Lock.h"
+#include "../SingleshotSemaphore.h"
 #include "FSEventsService.h"
 
 #include <CoreServices/CoreServices.h>
-#include <pthread.h>
+#include <thread>
 #include <string>
 
 void *scheduleRunLoopWork(void *runLoop);
@@ -36,8 +36,8 @@ private:
   bool mExited;
   std::string mPath;
   CFRunLoopRef mRunLoop;
-  pthread_t mRunLoopThread;
-  pthread_mutex_t mMutex;
+  std::thread mRunLoopThread;
+  SingleshotSemaphore mReadyForCleanup;
   bool mStarted;
 };
 

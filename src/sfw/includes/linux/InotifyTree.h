@@ -9,6 +9,7 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <unordered_set>
 
 class InotifyTree {
 public:
@@ -21,7 +22,7 @@ public:
   bool isRootAlive();
   bool nodeExists(int wd);
   void removeDirectory(int wd);
-  void renameDirectory(int wd, std::string oldName, std::string newName);
+  void renameDirectory(int fromWd, std::string fromName, int toWd, std::string toName);
 
   ~InotifyTree();
 private:
@@ -32,7 +33,8 @@ private:
       int inotifyInstance,
       InotifyNode *parent,
       std::string directory,
-      std::string name
+      std::string name,
+      ino_t inodeNumber
     );
 
     void addChild(std::string name);
@@ -42,9 +44,12 @@ private:
     InotifyNode *getParent();
     bool inotifyInit();
     bool isAlive();
+    InotifyNode *pullChild(std::string name);
     void removeChild(std::string name);
     void renameChild(std::string oldName, std::string newName);
     void setName(std::string name);
+    void setParent(InotifyNode *newParent);
+    void takeChildAsName(InotifyNode *child, std::string name);
 
     ~InotifyNode();
   private:
@@ -61,6 +66,7 @@ private:
     std::map<std::string, InotifyNode *> *mChildren;
     std::string mDirectory;
     std::string mFullPath;
+    ino_t mInodeNumber;
     const int mInotifyInstance;
     std::string mName;
     InotifyNode *mParent;
@@ -72,10 +78,13 @@ private:
   void setError(std::string error);
   void addNodeReferenceByWD(int watchDescriptor, InotifyNode *node);
   void removeNodeReferenceByWD(int watchDescriptor);
+  bool addInode(ino_t inodeNumber);
+  void removeInode(ino_t inodeNumber);
 
   std::string mError;
   const int mInotifyInstance;
   std::map<int, InotifyNode *> *mInotifyNodeByWatchDescriptor;
+  std::unordered_set<ino_t> inodes;
   InotifyNode *mRoot;
 
   friend class InotifyNode;

@@ -2,48 +2,54 @@
 #define NSFW_QUEUE_H
 
 #include <string>
-
-extern "C" {
-#include "opa_queue.h"
-#include "opa_primitives.h"
-}
+#include <memory>
+#include <deque>
+#include <vector>
+#include <mutex>
 
 enum EventType {
-	CREATED = 0,
-	DELETED = 1,
-	MODIFIED = 2,
-	RENAMED = 3
+  CREATED = 0,
+  DELETED = 1,
+  MODIFIED = 2,
+  RENAMED = 3
 };
 
 struct Event {
-	EventType type;
-	std::string directory;
-	std::string fileA;
-	std::string fileB;
+  Event(
+    const EventType type,
+    const std::string &fromDirectory,
+    const std::string &fromFile,
+    const std::string &toDirectory,
+    const std::string &toFile
+  ) :
+    type(type),
+    fromDirectory(fromDirectory),
+    toDirectory(toDirectory),
+    fromFile(fromFile),
+    toFile(toFile)
+  {}
+
+  EventType type;
+  std::string fromDirectory, toDirectory, fromFile, toFile;
 };
 
 class EventQueue {
 public:
-  EventQueue();
-  ~EventQueue();
-
   void clear();
-  int count();
-  Event *dequeue(); // Free this pointer when you are done with it
+  std::size_t count();
+  std::unique_ptr<Event> dequeue();
+  std::unique_ptr<std::vector<std::unique_ptr<Event>>> dequeueAll();
   void enqueue(
-    EventType type,
-    std::string directory,
-    std::string fileA,
-    std::string fileB = ""
+    const EventType type,
+    const std::string &fromDirectory,
+    const std::string &fromFile,
+    const std::string &toDirectory = "",
+    const std::string &toFile = ""
   );
 
 private:
-  struct EventNode {
-    OPA_Queue_element_hdr_t header;
-    Event *event;
-  };
-  OPA_Queue_info_t mQueue;
-  OPA_int_t mNumEvents;
+  std::deque<std::unique_ptr<Event>> queue;
+  std::mutex mutex;
 };
 
 #endif

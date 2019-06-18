@@ -4,28 +4,14 @@
 
 #include "RunLoop.h"
 
-void *scheduleRunLoopWork(void *runLoop) {
-  ((RunLoop *)runLoop)->work();
-  return NULL;
-}
-
 RunLoop::RunLoop(FSEventsService *eventsService, std::string path):
   mEventsService(eventsService),
   mExited(false),
   mPath(path),
   mRunLoop(NULL),
   mStarted(false) {
-  if (pthread_mutex_init(&mMutex, NULL) != 0) {
-    mStarted = false;
-    return;
-  }
-
-  mStarted = !pthread_create(
-    &mRunLoopThread,
-    NULL,
-    scheduleRunLoopWork,
-    (void *)this
-  );
+  mRunLoopThread = std::thread([] (RunLoop *rl) { rl->work(); }, this);
+  mStarted = mRunLoopThread.joinable();
 }
 
 bool RunLoop::isLooping() {
@@ -37,25 +23,13 @@ RunLoop::~RunLoop() {
     return;
   }
 
-  FSEventStreamStop(mEventStream);
-  FSEventStreamInvalidate(mEventStream);
-  FSEventStreamRelease(mEventStream);
-
-  while(!CFRunLoopIsWaiting(mRunLoop)) {}
+  mReadyForCleanup.wait();
   CFRunLoopStop(mRunLoop);
 
-  {
-    Lock syncWithWork(this->mMutex);
-    pthread_cancel(mRunLoopThread);
-  }
-
-  pthread_join(mRunLoopThread, NULL);
-  pthread_mutex_destroy(&mMutex);
+  mRunLoopThread.join();
 }
 
 void RunLoop::work() {
-  Lock syncWithDestructor(this->mMutex);
-
   CFAbsoluteTime latency = 0.001;
   CFStringRef fileWatchPath = CFStringCreateWithCString(
     NULL,
@@ -71,6 +45,14 @@ void RunLoop::work() {
   FSEventStreamContext callbackInfo {0, (void *)mEventsService, nullptr, nullptr, nullptr};
 
   mRunLoop = CFRunLoopGetCurrent();
+
+  __block auto *runLoopHasStarted = &mReadyForCleanup;
+  CFRunLoopPerformBlock(mRunLoop, kCFRunLoopDefaultMode, ^ {
+    runLoopHasStarted->signal();
+  });
+
+  CFRunLoopWakeUp(mRunLoop);
+
   mEventStream = FSEventStreamCreate(
     NULL,
     &FSEventsServiceCallback,
@@ -87,5 +69,11 @@ void RunLoop::work() {
   CFRelease(fileWatchPath);
 
   CFRunLoopRun();
+
+  FSEventStreamStop(mEventStream);
+  FSEventStreamUnscheduleFromRunLoop(mEventStream, mRunLoop, kCFRunLoopDefaultMode);
+  FSEventStreamInvalidate(mEventStream);
+  FSEventStreamRelease(mEventStream);
+
   mExited = true;
 }
